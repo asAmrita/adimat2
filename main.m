@@ -1,20 +1,36 @@
 
 clear all 
-%alpha_guess=1;
-%Xk=1;
- U0=0;
- %dk=1;
- %F=@laplaceeqn;
-  %gamma = 1e-4;
-   %  delta = 0.5;
-    % rhok  = 1e-8;
- %[alpha] = backtr(alpha_guess,Xk,dk,F,gamma,delta,rhok);
-  %out=laplaceeqn(U);
-  alpha=.1;
-U=ones(60,60);
-Jac = admDiffFor(@laplaceeqn, 1, U)
+clc
+UMin= -1;
+UMax= 1;
+U=zeros(5,5);
+% dk=admDiffVFor(@laplaceeqn, 1,U);
 
+ alpha_guess=100;
+ F=@laplaceeqn;
 
-%U=U0+alpha*(-diff(U))
-%out=laplaceeqn(U)
-%out=laplaceeqn(alpha_guess)
+ 
+
+while 1
+
+   B=-(admDiffVFor(@laplaceeqn, 1,U));
+   dk = reshape(B, 5, 5);
+   [alpha] = backtr(alpha_guess,U,dk,F);
+   
+   if (norm(alpha*dk)/norm(U) < 1e-3) 
+       break
+   end
+   
+   %U = U + alpha*(dk)
+  
+   U = U + alpha*(dk);
+   U=min(U,UMax);
+   U=max(U,UMin);
+   
+   
+end
+
+%   end 
+surf(x,y,U)
+laplaceeqn(U)
+

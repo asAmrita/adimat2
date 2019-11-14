@@ -1,4 +1,4 @@
-function [alpha] = backtr(alpha_guess,Xk,dk,F,gamma,delta,rhok)
+function [alpha] = backtr(alpha_guess,Xk,dk,F)
 %function [alpha] = backtr(alpha_guess,Xk,dk,F,gamma,delta,rhok)
 % INPUT:
 %       NOTE: (*) indicates necessary input, the other variables are optional 
@@ -10,7 +10,7 @@ function [alpha] = backtr(alpha_guess,Xk,dk,F,gamma,delta,rhok)
 %           rhok         - constant provided by the user (1*1) into the range [0,  1];
 %       (*) F            - function handle of the objective function (RN->R );
 
-U0=0;
+
 if (nargin < 5)
     gamma = 1e-4;
     delta = 0.5;
