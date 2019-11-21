@@ -3,10 +3,9 @@ function out=laplaceeqn(U)
 nx = size(U,2);
 ny = size(U,1);
 
-lambda=1;
 %nx=25;                           %Number of steps in space(x)
 %ny=25;                           %Number of steps in space(y)       
-niter=10;                     %Number of iterations 
+niter=1000;                     %Number of iterations 
 dx=1/(nx-1);                     %Width of space step(x)
 dy=1/(ny-1);                     %Width of space step(y)
 x=0:dx:1;                        %Range of x(0,2) and specifying the grid points
@@ -19,7 +18,7 @@ f=@(x,y)(2.*pi^2.*sin(pi.*x).*sin(pi.*y)+sign(-sin(8.*pi.*x).*sin(8.*pi.*y)));
  P=zeros(ny,nx);                  %Preallocating p
  pn=zeros(ny,nx);
  %M=zeros(ny,nx);
- pw=zeros(ny,nx);
+% pw=zeros(ny,nx);
  %pw=zeros(ny,nx);
  %Preallocating pn
 % % %
@@ -38,11 +37,12 @@ f=@(x,y)(2.*pi^2.*sin(pi.*x).*sin(pi.*y)+sign(-sin(8.*pi.*x).*sin(8.*pi.*y)));
   for it=1:niter
         
     pn=P;
-    %P(i,j)=((dy^2*(pn(i+1,j)+pn(i-1,j)))+(dx^2*(pn(i,j+1)+pn(i,j-1))))/(2*(dx^2+dy^2))-(P(i,j))+U(i,j)*(dx^2+dy^2);
-    P(i,j)=((dy^2*(pn(i+1,j)+pn(i-1,j)))+(dx^2*(pn(i,j+1)+pn(i,j-1)))-((U(i,j)+f(x(i)',y(j)))*dx^2*dy*2))/(2*(dx^2+dy^2));
-  %  pw(i,j)=M(i,j);
+   
+    % P(i,j)=((dy^2*(pn(i+1,j)+pn(i-1,j)))+(dx^2*(pn(i,j+1)+pn(i,j-1))))/(2*(dx^2+dy^2))-(U(i,j)*dx^2*dy^2)/(2*(dx^2+dy^2))-(f(x(i)',y(j))*dx^2*dy^2)/(2*(dx^2+dy^2));
+    P(i,j)=((dy^2*(pn(i+1,j)+pn(i-1,j)))+(dx^2*(pn(i,j+1)+pn(i,j-1)))-(U(i,j)+f(x(i)',y(j))*dx^2*dy^2))/(2*(dx^2+dy^2));
+  
 %  
-% %     
+     
 % %  %Boundary conditions (Neumann conditions)
       P(:,1)=0;
       P(:,nx)=0;
